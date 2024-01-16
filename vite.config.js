@@ -8,6 +8,9 @@ export default defineConfig(({ command }) => {
     define: {
       [command === 'serve' ? 'global' : '_global']: {},
     },
+    optimizeDeps: {
+      entries: [],
+    },
     root: 'src',
     build: {
       sourcemap: true,
