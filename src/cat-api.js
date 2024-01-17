@@ -9,12 +9,29 @@ export function fetchBreeds() {
     method: 'get',
     url: 'https://api.thecatapi.com/v1/breeds',
   }).then(response => {
-    response.data.forEach(cat => {
+    response.data.forEach(({ id, name }) => {
       catBreeds.push({
-        id: cat.id,
-        name: cat.name,
+        id,
+        name,
       });
     });
     return catBreeds;
+  });
+}
+
+export function fetchCatByBreed(breedId) {
+  return axios({
+    method: 'get',
+    url: 'https://api.thecatapi.com/v1/images/search',
+    params: {
+      breed_ids: breedId,
+    },
+  }).then(({ data }) => {
+    return {
+      image: data[0].url,
+      description: data[0].breeds[0].description,
+      name: data[0].breeds[0].name,
+      temperament: data[0].breeds[0].temperament,
+    };
   });
 }

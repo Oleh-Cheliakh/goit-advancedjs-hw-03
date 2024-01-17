@@ -2,7 +2,7 @@
   width: 48px;
   height: 48px;
   display: block;
-  margin: 20px auto;
+  margin: 20px;
   position: relative;
   border: 3px solid #919191;
   border-radius: 50%;
@@ -37,4 +37,20 @@
   100% {
     transform: translate(-10px, -10px);
   }
+}
+
+.cat-info {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.cat-info-image {
+  object-fit: cover;
+  object-position: center;
+  border-radius: 10px;
+}
+
+.hidden {
+  display: none;
 }
