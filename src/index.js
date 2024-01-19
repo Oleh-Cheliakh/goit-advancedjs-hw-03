@@ -1,9 +1,6 @@
 // Imported API fetch functions
 import { fetchBreeds, fetchCatByBreed } from './api/cat-api';
 
-// // Selector script
-// import './lib/slimselect.min';
-
 // Pop up messages library
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
