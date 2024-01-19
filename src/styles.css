@@ -1,3 +1,7 @@
+/* Import selector styles */
+@import url(lib/slimselect.css);
+
+/* Loader styles */
 .loader {
   width: 48px;
   height: 48px;
@@ -39,18 +43,27 @@
   }
 }
 
+/* Selector */
+.breed-select {
+  max-width: 300px;
+  margin-bottom: 20px;
+}
+
+/* Info block container */
 .cat-info {
   display: flex;
   gap: 20px;
   align-items: center;
 }
 
+/* Info image */
 .cat-info-image {
   object-fit: cover;
   object-position: center;
   border-radius: 10px;
 }
 
+/* Hidden objects */
 .hidden {
   display: none;
 }

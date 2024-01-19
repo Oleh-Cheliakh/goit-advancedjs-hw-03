@@ -1,30 +1,74 @@
-import { fetchBreeds, fetchCatByBreed } from './cat-api';
+// Imported API fetch functions
+import { fetchBreeds, fetchCatByBreed } from './api/cat-api';
 
+// Selector script
+import './lib/slimselect.min';
+
+// Pop up messages library
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
+
+// Pick loader and selector elements
 const optionSelecter = document.querySelector('.breed-select');
 const loaderElement = document.querySelector('.loader');
 
-optionSelecter.classList.add('hidden');
-
+// Add options to selector after API sends breed names
 function addOptions() {
-  fetchBreeds().then(data => {
-    const selectorMarkup = data
-      .map(breed => `<option value=${breed.id}>${breed.name}</option>`)
-      .join('');
+  // Get breeds names and ids
+  fetchBreeds()
+    .then(data => {
+      // Create markup for options
+      const selectorMarkup = data
+        .map(breed => `<option value=${breed.id}>${breed.name}</option>`)
+        .join('');
 
-    optionSelecter.insertAdjacentHTML('afterbegin', selectorMarkup);
-    optionSelecter.classList.remove('hidden');
-    loaderElement.classList.add('hidden');
-  });
+      // Adds markup with options to selector
+      optionSelecter.insertAdjacentHTML('beforeend', selectorMarkup);
+
+      // Creates custom selector
+      new SlimSelect({
+        select: optionSelecter,
+        settings: {
+          placeholderText: 'Select breed',
+        },
+      });
+
+      //Shows selector and hides loader
+      optionSelecter.classList.remove('hidden');
+      loaderElement.classList.add('hidden');
+    })
+    .catch(error => {
+      // Shows error message in pop up
+      iziToast.show({
+        message: `❌ Oops! Something went wrong! Try reloading the page!`,
+        color: 'red',
+        position: 'topCenter',
+        transitionIn: 'fadeInDown',
+      });
+
+      //Hides loader after receiving an error
+      loaderElement.classList.add('hidden');
+    });
 }
 
+// Initialize request to API in order to receive breeds names and generate options for selector
 addOptions();
 
-optionSelecter.addEventListener('change', event => {
+// Invokes after selector changes
+function handleBreedChange(breedId) {
+  //Pick container for cat info
   const catInfoElement = document.querySelector('.cat-info');
+
+  //Clear container before request
   catInfoElement.innerHTML = '';
+
+  //Shows loader once API request starts
   loaderElement.classList.remove('hidden');
-  fetchCatByBreed(event.target.value).then(
-    ({ image, description, name, temperament }) => {
+
+  //Initiate request about breed info by given ID
+  fetchCatByBreed(breedId)
+    .then(({ image, description, name, temperament }) => {
+      // Insert markup with cat's breed image and info into container
       catInfoElement.insertAdjacentHTML(
         'afterbegin',
         `<img class="cat-info-image" src="${image}" alt="Cat of ${name} breed" width="300" height="300" />
@@ -34,7 +78,23 @@ optionSelecter.addEventListener('change', event => {
         <p><b>Temperament:</b> ${temperament}</p>
       </div>`
       );
+      // Hides loader after receiving an answer
       loaderElement.classList.add('hidden');
-    }
-  );
+    })
+    .catch(error => {
+      // Shows error message in pop up window
+      iziToast.show({
+        message: `❌ Oops! Something went wrong! Try reloading the page!`,
+        color: 'red',
+        position: 'topCenter',
+        transitionIn: 'fadeInDown',
+      });
+      // Hides loader after receiving an error
+      loaderElement.classList.add('hidden');
+    });
+}
+
+// Adds event listener to selector changes
+optionSelecter.addEventListener('change', event => {
+  handleBreedChange(event.target.value);
 });
