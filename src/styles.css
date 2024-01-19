@@ -1,5 +1,5 @@
-/* Import selector styles */
-@import url(lib/slimselect.css);
+/* Import selector styles
+@import url(lib/slimselect.css); */
 
 /* Loader styles */
 .loader {

@@ -1,8 +1,8 @@
 // Imported API fetch functions
 import { fetchBreeds, fetchCatByBreed } from './api/cat-api';
 
-// Selector script
-import './lib/slimselect.min';
+// // Selector script
+// import './lib/slimselect.min';
 
 // Pop up messages library
 import iziToast from 'izitoast';
@@ -12,10 +12,16 @@ import 'izitoast/dist/css/iziToast.min.css';
 const optionSelecter = document.querySelector('.breed-select');
 const loaderElement = document.querySelector('.loader');
 
+// Initialize request to API in order to receive breeds names and generate options for selector
+addOptions();
+
+// Adds event listener to selector changes
+optionSelecter.addEventListener('change', event => {
+  handleBreedChange(event.target.value);
+});
+
 // Add options to selector after API sends breed names
 function addOptions() {
-  // Hides selector before API call
-  optionSelecter.classList.add('hidden');
   // Get breeds names and ids
   fetchBreeds()
     .then(data => {
@@ -42,7 +48,7 @@ function addOptions() {
     .catch(error => {
       // Shows error message in pop up
       iziToast.show({
-        message: `❌ Oops! Something went wrong! Try reloading the page!`,
+        message: '❌ Oops! Something went wrong! Try reloading the page!',
         color: 'red',
         position: 'topCenter',
         transitionIn: 'fadeInDown',
@@ -52,9 +58,6 @@ function addOptions() {
       loaderElement.classList.add('hidden');
     });
 }
-
-// Initialize request to API in order to receive breeds names and generate options for selector
-addOptions();
 
 // Invokes after selector changes
 function handleBreedChange(breedId) {
@@ -86,7 +89,7 @@ function handleBreedChange(breedId) {
     .catch(error => {
       // Shows error message in pop up window
       iziToast.show({
-        message: `❌ Oops! Something went wrong! Try reloading the page!`,
+        message: '❌ Oops! Something went wrong! Try reloading the page!',
         color: 'red',
         position: 'topCenter',
         transitionIn: 'fadeInDown',
@@ -95,8 +98,3 @@ function handleBreedChange(breedId) {
       loaderElement.classList.add('hidden');
     });
 }
-
-// Adds event listener to selector changes
-optionSelecter.addEventListener('change', event => {
-  handleBreedChange(event.target.value);
-});
