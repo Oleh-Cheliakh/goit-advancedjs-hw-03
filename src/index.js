@@ -14,6 +14,8 @@ const loaderElement = document.querySelector('.loader');
 
 // Add options to selector after API sends breed names
 function addOptions() {
+  // Hides selector before API call
+  optionSelecter.classList.add('hidden');
   // Get breeds names and ids
   fetchBreeds()
     .then(data => {
